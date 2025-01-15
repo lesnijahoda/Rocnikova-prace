@@ -35,7 +35,7 @@ class Hero {
     }
   }
   
-  // 🎮 Vytvoření instancí hrdiny a nepřítele
+  // 🎮 Vytvoření vlastností hrdiny a nepřítele
   const hero = new Hero('Warrior', 10);
   const enemy = new Enemy('Goblin', 50, 20);
   
@@ -80,8 +80,5 @@ class Hero {
   updateGameInfo();
   gameLoop();
   
-  // 📝 HTML (pro referenci):
-  // <canvas id="gameCanvas" width="500" height="400"></canvas>
-  // <div id="heroInfo"></div>
-  // <div id="enemyInfo"></div>
+ 
   
