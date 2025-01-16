@@ -67,29 +67,29 @@ canvas.addEventListener('click', (event) => {
   const y = event.clientY - rect.top;
 
   // Kontrola kliknutí na červený čtverec (nepřítel)
-  if (x >= 150 && x <= 350 && y >= 100 && y <= 300) {
+  if (x >= 350 && x <= 550 && y >= 150 && y <= 350) {
     if (enemy.hp > 0) {
       hero.attack(enemy);
       updateGameInfo();
     }
   }
 
-  // Kontrola kliknutí na modrý čtverec (zvýšení DPS)
-  if (x >= 50 && x <= 100 && y >= 350 && y <= 400) {
-    if (hero.gold >= 50) {
-      hero.gold -= 50;
-      hero.dps += 5;
-      console.log('DPS zvýšeno! Aktuální DPS:', hero.dps);
-      updateGameInfo();
-    }
-  }
-
   // Kontrola kliknutí na žlutý čtverec (zvýšení damage na klik)
-  if (x >= 400 && x <= 450 && y >= 350 && y <= 400) {
+  if (x >= 50 && x <= 150 && y >= 100 && y <= 150) {
     if (hero.gold >= 100) {
       hero.gold -= 100;
       hero.damage += 10;
       console.log('Poškození na klik zvýšeno! Aktuální damage:', hero.damage);
+      updateGameInfo();
+    }
+  }
+
+  // Kontrola kliknutí na modrý čtverec (zvýšení DPS)
+  if (x >= 50 && x <= 150 && y >= 200 && y <= 250) {
+    if (hero.gold >= 50) {
+      hero.gold -= 50;
+      hero.dps += 5;
+      console.log('DPS zvýšeno! Aktuální DPS:', hero.dps);
       updateGameInfo();
     }
   }
@@ -113,25 +113,25 @@ function gameLoop() {
 function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  // Kreslení nepřítele
+  // Kreslení nepřítele (vpravo)
   ctx.fillStyle = 'red';
-  ctx.fillRect(150, 100, 200, 200);
+  ctx.fillRect(350, 150, 200, 200);
 
-  // Kreslení modrého čtverce (zvýšení DPS)
-  ctx.fillStyle = 'blue';
-  ctx.fillRect(50, 350, 50, 50);
-  ctx.fillStyle = 'white';
-  ctx.font = '12px Arial';
-  ctx.fillText('DPS +5', 55, 380);
-  ctx.fillText('-50 zlata', 55, 395);
-
-  // Kreslení žlutého čtverce (zvýšení damage na klik)
+  // Kreslení žlutého čtverce (zvýšení damage na klik, vlevo nahoře)
   ctx.fillStyle = 'yellow';
-  ctx.fillRect(400, 350, 50, 50);
+  ctx.fillRect(50, 100, 100, 50);
   ctx.fillStyle = 'black';
   ctx.font = '12px Arial';
-  ctx.fillText('DMG +10', 405, 380);
-  ctx.fillText('-100 zlata', 405, 395);
+  ctx.fillText('DMG +10', 70, 125);
+  ctx.fillText('-100 zlata', 65, 140);
+
+  // Kreslení modrého čtverce (zvýšení DPS, vlevo pod žlutým)
+  ctx.fillStyle = 'blue';
+  ctx.fillRect(50, 200, 100, 50);
+  ctx.fillStyle = 'white';
+  ctx.font = '12px Arial';
+  ctx.fillText('DPS +5', 70, 225);
+  ctx.fillText('-50 zlata', 65, 240);
 }
 
 // Spuštění hry
