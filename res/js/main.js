@@ -61,6 +61,12 @@ const enemy = new Enemy('Goblin', 50, 20);
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 
+// Zabránění označování textu na canvasu normalně preventdefault ale nefungovalo:(
+canvas.style.userSelect = 'none';
+canvas.style.webkitUserSelect = 'none';
+canvas.style.msUserSelect = 'none';
+canvas.style.mozUserSelect = 'none';
+
 canvas.addEventListener('click', (event) => {
   const rect = canvas.getBoundingClientRect();
   const x = event.clientX - rect.left;
