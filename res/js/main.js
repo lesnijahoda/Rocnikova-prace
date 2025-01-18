@@ -57,6 +57,10 @@ class Enemy {
 const hero = new Hero('Warrior', 10);
 const enemy = new Enemy('Goblin', 50, 20);
 
+// 🖼️ Načtení obrázku slizu
+const slimeImage = new Image();
+slimeImage.src = './res/img/slime.png'; // Cesta k obrázku
+
 // 🖱️ Zpracování kliknutí na canvas
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
@@ -125,15 +129,26 @@ function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
   // Kreslení nepřítele (vpravo)
-  ctx.fillStyle = 'red';
-  ctx.fillRect(350, 150, 200, 200);
+  if (slimeImage.complete) {
+    ctx.drawImage(slimeImage, 350, 150, 200, 200); // Obrázek slizu
+  } else {
+    ctx.fillStyle = 'red';
+    ctx.fillRect(350, 150, 200, 200); // Rezervní čtverec, dokud se obrázek nenačte
+  }
 
   // Kreslení health baru pod nepřítelem
-  const healthBarWidth = 200 * (enemy.hp / enemy.maxHp);
+  const healthBarWidth = 300 * (enemy.hp / enemy.maxHp);
+  ctx.lineWidth = 2;
+  ctx.strokeStyle = 'black';
   ctx.fillStyle = 'gray';
-  ctx.fillRect(350, 360, 200, 20);
+  ctx.beginPath();
+  ctx.roundRect(300, 360, 300, 30, 10); // Rámeček
+  ctx.stroke();
+  ctx.fill();
   ctx.fillStyle = 'green';
-  ctx.fillRect(350, 360, healthBarWidth, 20);
+  ctx.beginPath();
+  ctx.roundRect(300, 360, healthBarWidth, 30, 10); // Zdraví
+  ctx.fill();
 
   // Kreslení žlutého čtverce (zvýšení damage na klik, vlevo nahoře)
   ctx.fillStyle = 'yellow';
@@ -155,6 +170,8 @@ function draw() {
 // Spuštění hry
 updateGameInfo();
 gameLoop();
+
+
 
   
  
