@@ -61,11 +61,14 @@ const enemy = new Enemy('Goblin', 50, 20);
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 
-// Zabránění označování textu na canvasu normalně preventdefault ale nefungovalo:(
+// Zabránění označování textu na canvasu pomocí CSS
 canvas.style.userSelect = 'none';
 canvas.style.webkitUserSelect = 'none';
 canvas.style.msUserSelect = 'none';
 canvas.style.mozUserSelect = 'none';
+
+let clickUpgradeCost = 100;
+let dpsUpgradeCost = 500;
 
 canvas.addEventListener('click', (event) => {
   const rect = canvas.getBoundingClientRect();
@@ -82,9 +85,10 @@ canvas.addEventListener('click', (event) => {
 
   // Kontrola kliknutí na žlutý čtverec (zvýšení damage na klik)
   if (x >= 50 && x <= 150 && y >= 100 && y <= 150) {
-    if (hero.gold >= 100) {
-      hero.gold -= 100;
+    if (hero.gold >= clickUpgradeCost) {
+      hero.gold -= clickUpgradeCost;
       hero.damage += 10;
+      clickUpgradeCost = Math.floor(clickUpgradeCost * 1.2); // Zdražení upgradu
       console.log('Poškození na klik zvýšeno! Aktuální damage:', hero.damage);
       updateGameInfo();
     }
@@ -92,9 +96,10 @@ canvas.addEventListener('click', (event) => {
 
   // Kontrola kliknutí na modrý čtverec (zvýšení DPS)
   if (x >= 50 && x <= 150 && y >= 200 && y <= 250) {
-    if (hero.gold >= 50) {
-      hero.gold -= 500;
+    if (hero.gold >= dpsUpgradeCost) {
+      hero.gold -= dpsUpgradeCost;
       hero.dps += 5;
+      dpsUpgradeCost = Math.floor(dpsUpgradeCost * 1.5); // Zdražení upgradu
       console.log('DPS zvýšeno! Aktuální DPS:', hero.dps);
       updateGameInfo();
     }
@@ -129,7 +134,7 @@ function draw() {
   ctx.fillStyle = 'black';
   ctx.font = '12px Arial';
   ctx.fillText('DMG +10', 70, 125);
-  ctx.fillText('-100 zlata', 65, 140);
+  ctx.fillText(`-${clickUpgradeCost} zlata`, 60, 140);
 
   // Kreslení modrého čtverce (zvýšení DPS, vlevo pod žlutým)
   ctx.fillStyle = 'blue';
@@ -137,7 +142,7 @@ function draw() {
   ctx.fillStyle = 'white';
   ctx.font = '12px Arial';
   ctx.fillText('DPS +5', 70, 225);
-  ctx.fillText('-500 zlata', 65, 240);
+  ctx.fillText(`-${dpsUpgradeCost} zlata`, 60, 240);
 }
 
 // Spuštění hry
