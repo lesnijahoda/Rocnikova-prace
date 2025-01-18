@@ -93,7 +93,7 @@ canvas.addEventListener('click', (event) => {
   // Kontrola kliknutí na modrý čtverec (zvýšení DPS)
   if (x >= 50 && x <= 150 && y >= 200 && y <= 250) {
     if (hero.gold >= 50) {
-      hero.gold -= 50;
+      hero.gold -= 500;
       hero.dps += 5;
       console.log('DPS zvýšeno! Aktuální DPS:', hero.dps);
       updateGameInfo();
@@ -137,7 +137,7 @@ function draw() {
   ctx.fillStyle = 'white';
   ctx.font = '12px Arial';
   ctx.fillText('DPS +5', 70, 225);
-  ctx.fillText('-50 zlata', 65, 240);
+  ctx.fillText('-500 zlata', 65, 240);
 }
 
 // Spuštění hry
