@@ -128,6 +128,13 @@ function draw() {
   ctx.fillStyle = 'red';
   ctx.fillRect(350, 150, 200, 200);
 
+  // Kreslení health baru pod nepřítelem
+  const healthBarWidth = 200 * (enemy.hp / enemy.maxHp);
+  ctx.fillStyle = 'gray';
+  ctx.fillRect(350, 360, 200, 20);
+  ctx.fillStyle = 'green';
+  ctx.fillRect(350, 360, healthBarWidth, 20);
+
   // Kreslení žlutého čtverce (zvýšení damage na klik, vlevo nahoře)
   ctx.fillStyle = 'yellow';
   ctx.fillRect(50, 100, 100, 50);
@@ -148,6 +155,7 @@ function draw() {
 // Spuštění hry
 updateGameInfo();
 gameLoop();
+
   
  
   
