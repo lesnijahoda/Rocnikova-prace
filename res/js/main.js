@@ -1,3 +1,4 @@
+//Win + . protože jsem retard a zapomínám na zkratku pro ikonky :) 
 // Hlavní soubor pro hru Clicker Heroes
 
 // 🧱 Základní objekty hrdiny a nepřítele
@@ -166,6 +167,34 @@ function draw() {
   ctx.fillText('DPS +5', 70, 225);
   ctx.fillText(`-${dpsUpgradeCost} zlata`, 60, 240);
 }
+
+// 🖼️ Scrollovatelný panel pro hrdiny
+const heroContainer = document.getElementById('heroContainer');
+const heroList = document.createElement('div');
+heroList.style.height = '550px';
+heroList.style.overflowY = 'scroll';
+heroList.style.border = '1px solid black';
+heroList.style.width = '600px';
+heroList.style.padding = '10px';
+heroList.style.position = 'absolute';
+heroList.style.left = '10px';
+heroList.style.top = '300px';
+
+for (let i = 1; i <= 20; i++) {
+  const heroItem = document.createElement('div');
+  heroItem.style.height = '100px';
+  heroItem.style.marginBottom = '10px';
+  heroItem.style.border = '1px solid gray';
+  heroItem.style.borderRadius = '5px';
+  heroItem.style.display = 'flex';
+  heroItem.style.alignItems = 'center';
+  heroItem.style.justifyContent = 'center';
+  heroItem.style.backgroundColor = '#f4f4f4';
+  heroItem.innerText = `Hrdina ${i}`;
+  heroList.appendChild(heroItem);
+}
+
+heroContainer.appendChild(heroList);
 
 // Spuštění hry
 updateGameInfo();
