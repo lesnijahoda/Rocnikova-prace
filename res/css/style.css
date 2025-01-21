@@ -8,3 +8,15 @@ canvas {
     font-family: Arial, sans-serif;
     font-size: 20px;
   }
+  .hero-row {
+      height: 100px; /* Zvýšení výšky řádku */
+       border-bottom: 1px solid gray;
+       display: flex;
+       align-items: center;
+       padding-left: 10px;
+       font-size: 18px;
+       background-color: #f4f4f4;
+     }
+     .hero-row:nth-child(odd) {
+       background-color: #e9e9e9;
+     }

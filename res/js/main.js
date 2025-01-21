@@ -1,4 +1,4 @@
-//Win + . protože jsem retard a zapomínám na zkratku pro ikonky :) 
+//Win + . protože jsem ?????? a zapomínám na zkratku pro ikonky :) 
 // Hlavní soubor pro hru Clicker Heroes
 
 // 🧱 Základní objekty hrdiny a nepřítele
@@ -60,7 +60,7 @@ const enemy = new Enemy('Goblin', 50, 20);
 
 // 🖼️ Načtení obrázku slizu
 const slimeImage = new Image();
-slimeImage.src = './res/img/slime.png'; // Cesta k obrázku
+slimeImage.src = './res/img/sorcerer.png'; // Cesta k obrázku
 
 // 🖱️ Zpracování kliknutí na canvas
 const canvas = document.getElementById('gameCanvas');
@@ -168,38 +168,36 @@ function draw() {
   ctx.fillText(`-${dpsUpgradeCost} zlata`, 60, 240);
 }
 
-// 🖼️ Scrollovatelný panel pro hrdiny
-const heroContainer = document.getElementById('heroContainer');
-const heroList = document.createElement('div');
-heroList.style.height = '550px';
-heroList.style.overflowY = 'scroll';
-heroList.style.border = '1px solid black';
-heroList.style.width = '600px';
-heroList.style.padding = '10px';
-heroList.style.position = 'absolute';
-heroList.style.left = '10px';
-heroList.style.top = '300px';
+// 🏋️ Kreslení hrdinů na levém panelu
+const heroPanel = document.getElementById('heroPanel');
 
+const heroImage = new Image();
+heroImage.src = './res/img/smrt.png';
+
+// Generování 20 hrdinů
 for (let i = 1; i <= 20; i++) {
-  const heroItem = document.createElement('div');
-  heroItem.style.height = '100px';
-  heroItem.style.marginBottom = '10px';
-  heroItem.style.border = '1px solid gray';
-  heroItem.style.borderRadius = '5px';
-  heroItem.style.display = 'flex';
-  heroItem.style.alignItems = 'center';
-  heroItem.style.justifyContent = 'center';
-  heroItem.style.backgroundColor = '#f4f4f4';
-  heroItem.innerText = `Hrdina ${i}`;
-  heroList.appendChild(heroItem);
-}
+  const heroRow = document.createElement('div');
+  heroRow.className = 'hero-row';
+  const heroButton = document.createElement('button');
+  heroButton.textContent = 'Najmout';
+  heroButton.style.marginRight = '10px';
 
-heroContainer.appendChild(heroList);
+  const heroImg = document.createElement('img');
+  heroImg.src = heroImage.src;
+  heroImg.alt = `Hrdina ${i}`;
+  heroImg.style.width = '80px';
+  heroImg.style.height = '80px';
+  heroImg.style.marginRight = '10px';
+
+  heroRow.appendChild(heroButton);
+  heroRow.appendChild(heroImg);
+  heroRow.appendChild(document.createTextNode(`Hrdina ${i}`));
+  heroPanel.appendChild(heroRow);
+}
 
 // Spuštění hry
 updateGameInfo();
 gameLoop();
-
 
 
   
