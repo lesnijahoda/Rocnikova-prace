@@ -72,8 +72,7 @@ canvas.style.webkitUserSelect = 'none';
 canvas.style.msUserSelect = 'none';
 canvas.style.mozUserSelect = 'none';
 
-let clickUpgradeCost = 100;
-let dpsUpgradeCost = 500;
+
 
 canvas.addEventListener('click', (event) => {
   const rect = canvas.getBoundingClientRect();
@@ -88,27 +87,7 @@ canvas.addEventListener('click', (event) => {
     }
   }
 
-  // Kontrola kliknutí na žlutý čtverec (zvýšení damage na klik)
-  if (x >= 50 && x <= 150 && y >= 100 && y <= 150) {
-    if (hero.gold >= clickUpgradeCost) {
-      hero.gold -= clickUpgradeCost;
-      hero.damage += 10;
-      clickUpgradeCost = Math.floor(clickUpgradeCost * 1.2); // Zdražení upgradu
-      console.log('Poškození na klik zvýšeno! Aktuální damage:', hero.damage);
-      updateGameInfo();
-    }
-  }
-
-  // Kontrola kliknutí na modrý čtverec (zvýšení DPS)
-  if (x >= 50 && x <= 150 && y >= 200 && y <= 250) {
-    if (hero.gold >= dpsUpgradeCost) {
-      hero.gold -= dpsUpgradeCost;
-      hero.dps += 5;
-      dpsUpgradeCost = Math.floor(dpsUpgradeCost * 1.5); // Zdražení upgradu
-      console.log('DPS zvýšeno! Aktuální DPS:', hero.dps);
-      updateGameInfo();
-    }
-  }
+  
 });
 
 // 🔄 Funkce pro aktualizaci herních informací
@@ -151,21 +130,7 @@ function draw() {
   ctx.roundRect(300, 360, healthBarWidth, 30, 10); // Zdraví
   ctx.fill();
 
-  // Kreslení žlutého čtverce (zvýšení damage na klik, vlevo nahoře)
-  ctx.fillStyle = 'yellow';
-  ctx.fillRect(50, 100, 100, 50);
-  ctx.fillStyle = 'black';
-  ctx.font = '12px Arial';
-  ctx.fillText('DMG +10', 70, 125);
-  ctx.fillText(`-${clickUpgradeCost} zlata`, 60, 140);
-
-  // Kreslení modrého čtverce (zvýšení DPS, vlevo pod žlutým)
-  ctx.fillStyle = 'blue';
-  ctx.fillRect(50, 200, 100, 50);
-  ctx.fillStyle = 'white';
-  ctx.font = '12px Arial';
-  ctx.fillText('DPS +5', 70, 225);
-  ctx.fillText(`-${dpsUpgradeCost} zlata`, 60, 240);
+  
 }
 
 // 🏋️ Kreslení hrdinů na levém panelu
@@ -177,11 +142,12 @@ heroImage.src = './res/img/smrt.png';
 
 // Seznam hrdinů/upgradů
 const upgrades = [
-  { name: "Hrdina 1", cost: 100, dps: 10, image: "./res/img/slime.png" },
-  { name: "Hrdina 2", cost: 500, dps: 50, image: "./res/img/smrt.png" },
-  { name: "Hrdina 3", cost: 1000, dps: 100, image: "./res/img/sorcerer.png" },
-  { name: "Hrdina 3", cost: 1000, dps: 100, image: "./res/img/zeus.png" },
-  { name: "Hrdina 3", cost: 1000, dps: 100, image: "./res/img/poseidon.png" },
+  { name: "Slime", cost: 100, dps:35,  image: "./res/img/slime.png", isClickMultiplier: true },
+  { name: "Smrtka", cost: 500, dps: 15, image: "./res/img/smrt.png" },
+  { name: "Kouzelník", cost: 1000, dps: 100, image: "./res/img/sorcerer.png" },
+  { name: "Zeus", cost: 10000, dps: 1000, image: "./res/img/zeus.png" },
+  { name: "Poseidon", cost: 100000, dps: 10000, image: "./res/img/poseidon.png" },
+  { name: "Hades", cost: 1000000, dps: 100000, image: "./res/img/hades.png" },
   
 ];
 
@@ -194,8 +160,8 @@ upgrades.forEach((upgrade, index) => {
 
   const heroImage = document.createElement("img");
   heroImage.src = upgrade.image;
-  heroImage.style.width = "50px";
-  heroImage.style.height = "50px";
+  heroImage.style.width = "120px";
+  heroImage.style.height = "120px";
   heroImage.style.marginRight = "10px";
 
   const heroButton = document.createElement("button");
@@ -206,11 +172,15 @@ upgrades.forEach((upgrade, index) => {
   heroButton.addEventListener("click", () => {
     if (hero.gold >= upgrade.cost) {
       hero.gold -= upgrade.cost;
-      hero.dps += upgrade.dps;
+      if (upgrade.isClickMultiplier) {
+        hero.damage += 35; // Zvýšení damage za kliknutí
+      } else {
+        hero.dps += upgrade.dps;
+      }
       upgrade.cost = Math.floor(upgrade.cost * 1.5); // Zvýšení ceny
       heroButton.textContent = `Najmout (-${upgrade.cost} zlata)`; // Aktualizace tlačítka
       updateGameInfo();
-      console.log(`${upgrade.name} najat! DPS zvýšeno na ${hero.dps}`);
+      console.log(`${upgrade.name} najat! `);
     } else {
       console.log("Nedostatek zlata!");
     }
@@ -218,7 +188,7 @@ upgrades.forEach((upgrade, index) => {
 
   heroRow.appendChild(heroImage);
   heroRow.appendChild(heroButton);
-  heroRow.appendChild(document.createTextNode(`${upgrade.name} (DPS: ${upgrade.dps})`));
+  heroRow.appendChild(document.createTextNode(`${upgrade.name} (Damage: ${upgrade.dps || "Boost Kliknutí"})`));
   heroPanel.appendChild(heroRow);
 });
 
