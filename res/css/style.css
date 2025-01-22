@@ -20,3 +20,6 @@ canvas {
      .hero-row:nth-child(odd) {
        background-color: #e9e9e9;
      }
+     .hero-row img {
+        border-radius: 10px; /* Zaoblené obrázky */
+     }

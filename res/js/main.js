@@ -54,7 +54,7 @@ class Enemy {
   }
 }
 
-// 🎮 Vytvoření instancí hrdiny a nepřítele
+// 🎮 Vytvoření hrdiny a nepřítele
 const hero = new Hero('Warrior', 10);
 const enemy = new Enemy('Goblin', 50, 20);
 
@@ -66,7 +66,7 @@ slimeImage.src = './res/img/sorcerer.png'; // Cesta k obrázku
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 
-// Zabránění označování textu na canvasu pomocí CSS
+// Zabránění označování textu na canvasu 
 canvas.style.userSelect = 'none';
 canvas.style.webkitUserSelect = 'none';
 canvas.style.msUserSelect = 'none';
@@ -174,26 +174,53 @@ const heroPanel = document.getElementById('heroPanel');
 const heroImage = new Image();
 heroImage.src = './res/img/smrt.png';
 
-// Generování 20 hrdinů
-for (let i = 1; i <= 20; i++) {
-  const heroRow = document.createElement('div');
-  heroRow.className = 'hero-row';
-  const heroButton = document.createElement('button');
-  heroButton.textContent = 'Najmout';
-  heroButton.style.marginRight = '10px';
 
-  const heroImg = document.createElement('img');
-  heroImg.src = heroImage.src;
-  heroImg.alt = `Hrdina ${i}`;
-  heroImg.style.width = '80px';
-  heroImg.style.height = '80px';
-  heroImg.style.marginRight = '10px';
+// Seznam hrdinů/upgradů
+const upgrades = [
+  { name: "Hrdina 1", cost: 100, dps: 10, image: "./res/img/slime.png" },
+  { name: "Hrdina 2", cost: 500, dps: 50, image: "./res/img/smrt.png" },
+  { name: "Hrdina 3", cost: 1000, dps: 100, image: "./res/img/sorcerer.png" },
+  { name: "Hrdina 3", cost: 1000, dps: 100, image: "./res/img/zeus.png" },
+  { name: "Hrdina 3", cost: 1000, dps: 100, image: "./res/img/poseidon.png" },
+  
+];
 
+// Generování řádků
+heroPanel.innerHTML = ""; // Vymažeme obsah panelu, pokud je potřeba
+
+upgrades.forEach((upgrade, index) => {
+  const heroRow = document.createElement("div");
+  heroRow.className = "hero-row";
+
+  const heroImage = document.createElement("img");
+  heroImage.src = upgrade.image;
+  heroImage.style.width = "50px";
+  heroImage.style.height = "50px";
+  heroImage.style.marginRight = "10px";
+
+  const heroButton = document.createElement("button");
+  heroButton.textContent = `Najmout (-${upgrade.cost} zlata)`;
+  heroButton.style.marginRight = "10px";
+
+  // Logika nákupu
+  heroButton.addEventListener("click", () => {
+    if (hero.gold >= upgrade.cost) {
+      hero.gold -= upgrade.cost;
+      hero.dps += upgrade.dps;
+      upgrade.cost = Math.floor(upgrade.cost * 1.5); // Zvýšení ceny
+      heroButton.textContent = `Najmout (-${upgrade.cost} zlata)`; // Aktualizace tlačítka
+      updateGameInfo();
+      console.log(`${upgrade.name} najat! DPS zvýšeno na ${hero.dps}`);
+    } else {
+      console.log("Nedostatek zlata!");
+    }
+  });
+
+  heroRow.appendChild(heroImage);
   heroRow.appendChild(heroButton);
-  heroRow.appendChild(heroImg);
-  heroRow.appendChild(document.createTextNode(`Hrdina ${i}`));
+  heroRow.appendChild(document.createTextNode(`${upgrade.name} (DPS: ${upgrade.dps})`));
   heroPanel.appendChild(heroRow);
-}
+});
 
 // Spuštění hry
 updateGameInfo();
