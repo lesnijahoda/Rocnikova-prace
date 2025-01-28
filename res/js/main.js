@@ -80,7 +80,7 @@ canvas.addEventListener('click', (event) => {
   const y = event.clientY - rect.top;
 
   // Kontrola kliknutí na červený čtverec (nepřítel)
-  if (x >= 350 && x <= 550 && y >= 150 && y <= 350) {
+  if (x >= 850 && x <= 1050 && y >= 150 && y <= 350) {
     if (enemy.hp > 0) {
       hero.attack(enemy);
       updateGameInfo();
@@ -110,10 +110,10 @@ function draw() {
 
   // Kreslení nepřítele (vpravo)
   if (slimeImage.complete) {
-    ctx.drawImage(slimeImage, 350, 150, 200, 200); // Obrázek slizu
+    ctx.drawImage(slimeImage, 850, 150, 200, 200); // Obrázek slizu
   } else {
     ctx.fillStyle = 'red';
-    ctx.fillRect(350, 150, 200, 200); // Rezervní čtverec, dokud se obrázek nenačte
+    ctx.fillRect(850, 150, 200, 200); // Rezervní čtverec, dokud se obrázek nenačte
   }
 
   // Kreslení health baru pod nepřítelem
@@ -122,12 +122,12 @@ function draw() {
   ctx.strokeStyle = 'black';
   ctx.fillStyle = 'gray';
   ctx.beginPath();
-  ctx.roundRect(300, 360, 300, 30, 10); // Rámeček
+  ctx.roundRect(800, 360, 300, 30, 10); // Rámeček
   ctx.stroke();
   ctx.fill();
   ctx.fillStyle = 'green';
   ctx.beginPath();
-  ctx.roundRect(300, 360, healthBarWidth, 30, 10); // Zdraví
+  ctx.roundRect(800, 360, healthBarWidth, 30, 10); // Zdraví
   ctx.fill();
 
   
