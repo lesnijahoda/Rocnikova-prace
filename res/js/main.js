@@ -1,4 +1,7 @@
 //Win + . protože jsem ?????? a zapomínám na zkratku pro ikonky :) 
+
+import { heroPanel, upgrades } from "./heroes.js";
+
 // Hlavní soubor pro hru Clicker Heroes
 
 // 🧱 Základní objekty hrdiny a nepřítele
@@ -16,8 +19,8 @@ class Hero {
     if (enemy.hp <= 0) {
       enemy.hp = 0;
       this.gold += enemy.goldReward;
-      console.log(`${enemy.name} poražen! Získáno zlato: ${this.gold}`);
       enemy.respawn();
+      updateGoldBar(); 
     }
   }
 
@@ -28,8 +31,8 @@ class Hero {
       if (enemy.hp <= 0) {
         enemy.hp = 0;
         this.gold += enemy.goldReward;
-        console.log(`${enemy.name} poražen! Získáno zlato: ${this.gold}`);
         enemy.respawn();
+        updateGoldBar(); 
       }
     }
   }
@@ -50,7 +53,7 @@ class Enemy {
     this.maxHp = Math.floor(this.maxHp * 1.5);
     this.hp = this.maxHp;
     this.goldReward = Math.floor(this.goldReward * 1.5);
-    console.log(`${this.name} je zpět na úrovni ${this.level} s ${this.hp} HP!`);
+    
   }
 }
 
@@ -58,48 +61,43 @@ class Enemy {
 const hero = new Hero('Warrior', 10);
 const enemy = new Enemy('Goblin', 50, 20);
 
-// 🖼️ Načtení obrázku slizu
+// 🖼️ Načtení obrázku nepřítele
 const slimeImage = new Image();
-slimeImage.src = './res/img/smrt.png'; // Cesta k obrázku
+slimeImage.src = './res/img/smrt.png';
 
 // 🖱️ Zpracování kliknutí na canvas
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 
-// Zabránění označování textu na canvasu 
 canvas.style.userSelect = 'none';
 canvas.style.webkitUserSelect = 'none';
 canvas.style.msUserSelect = 'none';
 canvas.style.mozUserSelect = 'none';
-
-
 
 canvas.addEventListener('click', (event) => {
   const rect = canvas.getBoundingClientRect();
   const x = event.clientX - rect.left;
   const y = event.clientY - rect.top;
 
-  // Kontrola kliknutí na červený čtverec (nepřítel)
   if (x >= 850 && x <= 1050 && y >= 150 && y <= 350) {
     if (enemy.hp > 0) {
       hero.attack(enemy);
       updateGameInfo();
     }
   }
-
-  
 });
 
 // 🔄 Funkce pro aktualizaci herních informací
 function updateGameInfo() {
   document.getElementById('heroInfo').innerText = `Hrdina: ${hero.name}, Zlato: ${hero.gold}, DPS: ${hero.dps}, Damage: ${hero.damage}`;
   document.getElementById('enemyInfo').innerText = `Nepřítel: ${enemy.name}, Úroveň: ${enemy.level}, HP: ${enemy.hp}/${enemy.maxHp}`;
+  updateGoldBar(); 
 }
 
 // 🎨 Hlavní smyčka pro vykreslování hry
 function gameLoop() {
   draw();
-  hero.applyDPS(enemy); // DPS útok
+  hero.applyDPS(enemy);
   updateGameInfo();
   requestAnimationFrame(gameLoop);
 }
@@ -108,56 +106,42 @@ function gameLoop() {
 function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  // Kreslení nepřítele (vpravo)
+  // Umístění nepřítele na pravou polovinu obrazovky
+  const enemyPositionX = canvas.width / 2 + 300;  // Posunout na pravou polovinu obrazovky
+  const enemyPositionY = canvas.height / 2 + 40;  // Vertikálně ve středu obrazovky
+
+  // Pokud je obrázek nepřítele načtený, zobrazím ho
   if (slimeImage.complete) {
-    ctx.drawImage(slimeImage, 850, 150, 200, 200); // Obrázek slizu
+    ctx.drawImage(slimeImage, enemyPositionX, enemyPositionY, 200, 200); // Umístíme nepřítele na pravou polovinu obrazovky
   } else {
     ctx.fillStyle = 'red';
-    ctx.fillRect(850, 150, 200, 200); // Rezervní čtverec, dokud se obrázek nenačte
+    ctx.fillRect(enemyPositionX, enemyPositionY, 200, 200);  // Placeholder, pokud obrázek není načten
   }
 
-  // Kreslení health baru pod nepřítelem
+  // Zobrazení životy nepřítele
   const healthBarWidth = 300 * (enemy.hp / enemy.maxHp);
   ctx.lineWidth = 2;
   ctx.strokeStyle = 'black';
   ctx.fillStyle = 'gray';
   ctx.beginPath();
-  ctx.roundRect(800, 360, 300, 30, 10); // Rámeček
+  ctx.roundRect(enemyPositionX - 50, enemyPositionY + 220, 300, 30, 10); // Pozice pro health bar pod nepřítelem
   ctx.stroke();
   ctx.fill();
   ctx.fillStyle = 'green';
   ctx.beginPath();
-  ctx.roundRect(800, 360, healthBarWidth, 30, 10); // Zdraví
+  ctx.roundRect(enemyPositionX - 50, enemyPositionY + 220, healthBarWidth, 30, 10);  // Zdraví bude vyplněné podle aktuální hodnoty HP
   ctx.fill();
 
-  
+  // Zobrazení dalších informací (např. level, zlato)
+  ctx.fillStyle = 'white';
+  ctx.font = '16px Arial';
+  ctx.fillText(`HP: ${enemy.hp}/${enemy.maxHp}`, enemyPositionX - 50, enemyPositionY + 270);
+  ctx.fillText(`Level: ${enemy.level}`, enemyPositionX - 50, enemyPositionY + 300);
 }
 
-// 🏋️ Kreslení hrdinů na levém panelu
-const heroPanel = document.getElementById('heroPanel');
-
-const heroImage = new Image();
-heroImage.src = './res/img/smrt.png';
-
-
-// Seznam hrdinů/upgradů
-const upgrades = [
-  { name: "Slime", cost: 100, dps:35,  image: "./res/img/slime.png", isClickMultiplier: true },
-  { name: "death", cost: 500, dps: 15, image: "./res/img/smrt.png" },
-  { name: "Sorcerer", cost: 1000, dps: 100, image: "./res/img/sorcerer.png" },
-  { name: "Zeus", cost: 10000, dps: 1000, image: "./res/img/zeus.png" },
-  { name: "Poseidon", cost: 100000, dps: 10000, image: "./res/img/poseidon.png" },
-  { name: "Hades", cost: 1000000, dps: 18500, image: "./res/img/hades.png" },
-  { name: "Soldier", cost: 10000000, dps: 30500, image: "./res/img/soldier.png" },
-  { name: "SuperBoy", cost: 100000000, dps: 86900, image: "./res/img/superboy.png" },
-  { name: "FireMage", cost: 1000000000, dps: 1000000, image: "./res/img/firemage.png" },
-  
-];
-
-// Generování řádků
-heroPanel.innerHTML = ""; // Vymažeme obsah panelu, pokud je potřeba
-
-upgrades.forEach((upgrade, index) => {
+// 💥 Vykreslení panelu pro nákup hrdinů
+heroPanel.innerHTML = "";
+upgrades.forEach((upgrade) => {
   const heroRow = document.createElement("div");
   heroRow.className = "hero-row";
 
@@ -165,40 +149,43 @@ upgrades.forEach((upgrade, index) => {
   heroImage.src = upgrade.image;
   heroImage.style.width = "120px";
   heroImage.style.height = "120px";
-  heroImage.style.marginRight = "10px";
+  heroImage.style.marginRight = "50px";
 
   const heroButton = document.createElement("button");
-  heroButton.textContent = `Najmout (-${upgrade.cost} zlata)`;
-  heroButton.style.marginRight = "10px";
+heroButton.className = "hero-button";
+heroButton.innerHTML = `<span>Najmout</span><br><span>- ${upgrade.cost} zlata</span>`;
 
-  // Logika nákupu
-  heroButton.addEventListener("click", () => {
-    if (hero.gold >= upgrade.cost) {
-      hero.gold -= upgrade.cost;
-      if (upgrade.isClickMultiplier) {
-        hero.damage += 35; // Zvýšení damage za kliknutí
-      } else {
-        hero.dps += upgrade.dps;
-      }
-      upgrade.cost = Math.floor(upgrade.cost * 1.5); // Zvýšení ceny
-      heroButton.textContent = `Najmout (-${upgrade.cost} zlata)`; // Aktualizace tlačítka
-      updateGameInfo();
-      console.log(`${upgrade.name} najat! `);
-    } else {
-      console.log("Nedostatek zlata!");
-    }
-  });
+heroButton.addEventListener("click", () => {
+  if (hero.gold >= upgrade.cost) {
+    hero.gold -= upgrade.cost;
+    upgrade.isClickMultiplier ? hero.damage += 35 : hero.dps += upgrade.dps;
+    upgrade.cost = Math.floor(upgrade.cost * 1.5);
+    heroButton.innerHTML = `<span>Najmout</span><br><span>- ${upgrade.cost} zlata</span>`;
+    updateGameInfo();
+  }
+});
 
   heroRow.appendChild(heroImage);
   heroRow.appendChild(heroButton);
-  heroRow.appendChild(document.createTextNode(`${upgrade.name} (Damage: ${upgrade.dps || "Boost Kliknutí"})`));
   heroPanel.appendChild(heroRow);
 });
 
-// Spuštění hry
+
+
+const goldBar = document.createElement("div");
+goldBar.id = "goldBar";
+document.body.appendChild(goldBar);
+
+//  Funkce pro aktualizaci gold baru
+function updateGoldBar() {
+  
+    goldBar.innerText = `💰 Zlato: ${hero.gold}`;
+}
+
+
+
 updateGameInfo();
 gameLoop();
-
 
   
  
