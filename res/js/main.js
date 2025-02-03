@@ -1,6 +1,7 @@
 //Win + . protože jsem ?????? a zapomínám na zkratku pro ikonky :)
 
 import { heroPanel, upgrades } from "./heroes.js";
+import {checkAchievements,} from "./achievments.js";
 
 // Hlavní soubor pro hru Clicker Heroes
 
@@ -54,12 +55,13 @@ class Enemy {
     this.maxHp = Math.floor(this.maxHp * 1.5);
     this.hp = this.maxHp;
     this.goldReward = Math.floor(this.goldReward * 1.5);
+    
   }
 }
 
 // 🎮 Vytvoření hrdiny a nepřítele
-const hero = new Hero("Warrior", 10);
-const enemy = new Enemy("Strom", 50, 20);
+export const hero = new Hero("Warrior", 10);
+export const enemy = new Enemy("Strom", 50, 20);
 
 // 🖼️ Načtení obrázku nepřítele
 const slimeImage = new Image();
@@ -78,8 +80,8 @@ canvas.addEventListener("click", (event) => {
   const rect = canvas.getBoundingClientRect();
   const x = event.clientX - rect.left;
   const y = event.clientY - rect.top;
-  console.log(x + "X");
-  console.log(y + "Y");
+  //console.log(x + "X");
+  //console.log(y + "Y");
 
   if (x >= 120 && x <= 280 && y >= 10 && y <= 170) {
     if (enemy.hp > 0) {
@@ -99,6 +101,7 @@ function updateGameInfo() {
     "enemyInfo"
   ).innerText = `Nepřítel: ${enemy.name}, Úroveň: ${enemy.level}, HP: ${enemy.hp}/${enemy.maxHp}`;
   updateGoldBar();
+  checkAchievements();
 }
 
 // 🎨 Hlavní smyčka pro vykreslování hry
@@ -107,6 +110,7 @@ function gameLoop() {
   hero.applyDPS(enemy);
   updateGameInfo();
   requestAnimationFrame(gameLoop);
+  checkAchievements();
 }
 
 // 🖌️ Kreslení na canvas
@@ -203,7 +207,7 @@ goldBar.id = "goldBar";
 document.body.appendChild(goldBar);
 
 //  Funkce pro aktualizaci gold baru
-function updateGoldBar() {
+export function updateGoldBar() {
   goldBar.innerText = `💰 Zlato: ${hero.gold}`;
 }
 
