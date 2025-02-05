@@ -2,6 +2,7 @@
 
 import { heroPanel, upgrades } from "./heroes.js";
 import {checkAchievements,} from "./achievments.js";
+import { abilities } from "./abilities.js";
 
 // Hlavní soubor pro hru Clicker Heroes
 
@@ -93,7 +94,7 @@ canvas.addEventListener("click", (event) => {
 });
 
 // 🔄 Funkce pro aktualizaci herních informací
-function updateGameInfo() {
+export function updateGameInfo() {
   document.getElementById(
     "heroInfo"
   ).innerText = `DPS: ${hero.dps}, Damage: ${hero.damage}`;

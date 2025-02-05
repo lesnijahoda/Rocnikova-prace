@@ -103,3 +103,25 @@ div {
   padding: 15px;
   border-bottom: 1px solid gold;
 }
+
+
+.ability-button {
+  padding: 10px 20px;
+  font-size: 18px;
+  margin: 5px;
+  background-color: orange;
+  border: 2px solid gold;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.ability-button:hover {
+  background-color: darkorange;
+}
+
+.ability-button:disabled {
+  cursor: not-allowed;
+  background-color: grey;
+  opacity: 0.5;
+}
