@@ -173,6 +173,8 @@ function draw() {
 // 💥 Vykreslení panelu pro nákup hrdinů
 heroPanel.innerHTML = "";
 upgrades.forEach((upgrade) => {
+  upgrade.level = upgrade.level || 0; // Inicializace levelu, pokud neexistuje
+
   const heroRow = document.createElement("div");
   heroRow.className = "hero-row";
 
@@ -182,6 +184,11 @@ upgrades.forEach((upgrade) => {
   heroImage.style.height = "120px";
   heroImage.style.marginRight = "50px";
 
+  const heroInfo = document.createElement("div");
+  heroInfo.innerHTML = `<strong>${upgrade.name}</strong><br>Level: <span id="level-${upgrade.name}">${upgrade.level}</span>`;
+  heroInfo.style.color = "white";
+  heroInfo.style.marginRight = "20px";
+
   const heroButton = document.createElement("button");
   heroButton.className = "hero-button";
   heroButton.innerHTML = `<span>Najmout</span><br><span>- ${upgrade.cost} zlata</span>`;
@@ -189,16 +196,19 @@ upgrades.forEach((upgrade) => {
   heroButton.addEventListener("click", () => {
     if (hero.gold >= upgrade.cost) {
       hero.gold -= upgrade.cost;
+      upgrade.level++;
       upgrade.isClickMultiplier
         ? (hero.damage += 35)
         : (hero.dps += upgrade.dps);
       upgrade.cost = Math.floor(upgrade.cost * 1.5);
+      document.getElementById(`level-${upgrade.name}`).textContent = upgrade.level;
       heroButton.innerHTML = `<span>Najmout</span><br><span>- ${upgrade.cost} zlata</span>`;
       updateGameInfo();
     }
   });
 
   heroRow.appendChild(heroImage);
+  heroRow.appendChild(heroInfo);
   heroRow.appendChild(heroButton);
   heroPanel.appendChild(heroRow);
 });
