@@ -2,33 +2,33 @@ export const heroPanel = document.getElementById('heroPanel');
 heroPanel.innerHTML = "";
 export const upgrades = [
 
-    { name: "slime",
+    { name: "Roztelký slime",
      cost: 100,
       dps: 35,
        image: "./res/img/slime.png",
         isClickMultiplier: true
      },
-    { name: "death",
+    { name: "Smrtící death",
      cost: 500,
       dps: 15,
        image: "./res/img/smrt.png" 
     },
-    { name: "Sorcerer",
+    { name: "Blázniví sorcerer",
      cost: 1000,
       dps: 100,
        image: "./res/img/sorcerer.png"
      },
-    { name: "Zeus",
+    { name: "Mocný zeus",
      cost: 10000,
       dps: 1000,
        image: "./res/img/zeus.png"
      },
-    { name: "Poseidon",
+    { name: "Vážný poseidon",
      cost: 100000,
       dps: 10000,
        image: "./res/img/poseidon.png"
      },
-    { name: "Hades",
+    { name: "Chytrý hades",
      cost: 1000000,
       dps: 18500,
        image: "./res/img/hades.png"
