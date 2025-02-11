@@ -1,7 +1,7 @@
 body{
   /*background-color: #101011;*/
   
-    background-image: url('./res/img/backgrounds/louka.avif');
+    background-image: url("../img/backgrounds/louka.avif");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
