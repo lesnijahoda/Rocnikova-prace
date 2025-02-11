@@ -1,5 +1,14 @@
 body{
-  background-color: #101011;
+  /*background-color: #101011;*/
+  
+    background-image: url('/res/img/backgrounds/louka.avif');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+
 }
 
 canvas {
@@ -63,7 +72,13 @@ div {
   font-weight: bold;
   font-size: 13px;
   width: 150px;
+  cursor: pointer;
 }
+
+.hero-button:hover{
+  background-color: aqua;
+}
+
 .achievement{
   position: fixed;
     top: 10px;
@@ -124,4 +139,115 @@ div {
   cursor: not-allowed;
   background-color: grey;
   opacity: 0.5;
+}
+
+/*  Panel hrdinů */
+#heroPanel {
+  width: 30vw;
+  max-width: 800px;
+  height: 65vh; 
+  max-height: 65vh; 
+  border: 2px solid gold;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  overflow-y: auto; /* Přidá scrollbar, když je obsah vyšší než panel */
+  background-color: rgba(20, 20, 20, 0.9);
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px; /* Mezera mezi jednotlivými řádky */
+  align-items: center;
+}
+
+/*  Každý hrdina */
+.hero-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(255, 215, 0, 0.1);
+  border: 2px solid gold;
+  padding: 10px; 
+  border-radius: 10px;
+  width: 95%;
+  min-height: 140px; 
+}
+
+/*  Přidání scrollbaru pro lepší viditelnost */
+#heroPanel::-webkit-scrollbar {
+  width: 8px;
+}
+
+#heroPanel::-webkit-scrollbar-track {
+  background: rgba(255, 215, 0, 0.1);
+}
+
+#heroPanel::-webkit-scrollbar-thumb {
+  background: gold;
+  border-radius: 4px;
+}
+
+/*  Responzivita */
+@media (max-width: 1440px) {
+  #heroPanel {
+    width: 28vw;
+    height: 65vh;
+  }
+}
+
+@media (max-width: 1024px) {
+  #heroPanel {
+    width: 30vw;
+    height: 60vh;
+  }
+}
+
+@media (max-width: 768px) {
+  #heroPanel {
+    width: 40vw;
+    height: 55vh;
+  }
+
+  .hero-row {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    min-height: 120px;
+  }
+}
+/*velikosti obrázků hrdinů */
+.hero-row img {
+  width: 100px; 
+  height: 100px; 
+  object-fit: cover; /* Zajistí správné zobrazení */
+  border-radius: 10px; 
+  border: 2px solid gold; 
+}
+
+/*  Pokud je málo místa, obrázky se mírně zmenší */
+@media (max-width: 768px) {
+  .hero-row img {
+    width: 80px;
+    height: 80px;
+  }
+}
+
+.hero-info {
+  text-align: center;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.8);
+  border-radius: 10px;
+  margin: 10px;
+  color: white;
+}
+
+.hero-info h2 {
+  font-size: 28px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.hero-info p {
+  font-size: 20px;
 }

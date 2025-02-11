@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="./res/css/style.css">
+  <link rel="icon" href="/res/img/others/icon.png">
   <title>Clicker Heroes</title>
   
 </head>
@@ -12,7 +13,12 @@
   <canvas id="gameCanvas" width="400" height="400"></canvas>
   </div>
 
-  <div id="heroPanel" style="overflow-y: auto; width: 50vw; height: 700px; border: 1px solid black; position: absolute; bottom: 0; left: 0;"></div>
+  <div id="heroPanel" style="overflow-y: auto; width: 50vw; height: 700px; border: 1px solid black; position: absolute; bottom: 0; left: 0;">
+    <div class="hero-info">
+      <h2>Hrdina: <span id="hero-name">Hrdina 1</span></h2>
+      <p>Úroveň: <span id="hero-level">1</span></p>
+    </div>
+  </div>
   <div style="color: #ffffff;" id="heroInfo"></div>
   <div style="color: #ffffff;" id="enemyInfo"></div>
 
