@@ -15,6 +15,7 @@ class Hero {
     this.damage = damage;
     this.gold = 0;
     this.dps = 0; // Damage per second
+    this.clicks =0; //pocitani pro achievment
   }
 
   // Útok na nepřítele
@@ -87,6 +88,7 @@ canvas.addEventListener("click", (event) => {
 
   if (x >= 120 && x <= 280 && y >= 10 && y <= 170) {
     if (enemy.hp > 0) {
+      hero.clicks++;
       console.log("aaa");
       hero.attack(enemy);
       updateGameInfo();
