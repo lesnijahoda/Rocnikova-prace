@@ -2,7 +2,7 @@ export const heroPanel = document.getElementById('heroPanel');
 heroPanel.innerHTML = "";
 export const upgrades = [
 
-    { name: "Roztelký slime",
+    { name: "Rozteklý slime",
      cost: 100,
       dps: 35,
        image: "./res/img/slime.png",

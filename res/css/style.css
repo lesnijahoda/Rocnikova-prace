@@ -251,3 +251,37 @@ div {
 .hero-info p {
   font-size: 20px;
 }
+
+#backgroundPanel {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: rgba(0, 0, 0, 0.8);
+  padding: 10px;
+  border: 2px solid gold;
+  border-radius: 8px;
+  color: white;
+}
+
+#backgroundOptions {
+  margin-top: 10px;
+}
+
+.hidden {
+  display: none;
+}
+
+#backgroundPanel button {
+  background-color: rgb(162, 224, 111);
+  border: none;
+  padding: 8px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-bottom: 5px;
+  display: block; /* aby se tlačítka řadila pod sebe */
+  width: 100%; /* Aby vyplnila šířku */
+}
+
+#backgroundPanel button:hover {
+  background-color: #1e6cd1;
+}

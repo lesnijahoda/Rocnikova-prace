@@ -3,6 +3,7 @@
 import { heroPanel, upgrades } from "./heroes.js";
 import {checkAchievements,} from "./achievments.js";
 import { abilities } from "./abilities.js";
+import { renderBackgroundPanel } from "./backgrounds.js";
 
 // Hlavní soubor pro hru Clicker Heroes
 
@@ -222,6 +223,14 @@ export function updateGoldBar() {
   goldBar.innerText = `💰 Zlato: ${hero.gold}`;
 }
 
+const backgroundPanel = document.getElementById('backgroundPanel');
+const toggleBackgroundButton = document.getElementById('toggleBackgroundPanel');
+
+toggleBackgroundButton.addEventListener('click', () => {
+  backgroundPanel.classList.toggle('open');
+});
+
+renderBackgroundPanel(hero);
 updateGameInfo();
 gameLoop();
 
