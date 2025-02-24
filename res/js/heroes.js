@@ -49,9 +49,9 @@ export const upgrades = [
     { name: "ForestSlime", cost: 1000000000, dps: 1000000, image: "./res/img/forestslime.png" },
     { name: "RabbitSlime", cost: 1000000000, dps: 1000000, image: "./res/img/rabbitslime.png" },
     { name: "BlackKnight", cost: 1000000000, dps: 1000000, image: "./res/img/blackknight.png" },
-    { name: "FireMage", cost: 1000000000, dps: 1000000, image: "./res/img/blackknight2.png" },
-    { name: "FireMage", cost: 1000000000, dps: 1000000, image: "./res/img/firemage.png" },
-    { name: "FireMage", cost: 1000000000, dps: 1000000, image: "./res/img/firemage.png" },
+    { name: "Knight", cost: 1000000000, dps: 1000000, image: "./res/img/blackknight2.png" },
+    { name: "LightKnight", cost: 1000000000, dps: 1000000, image: "./res/img/lightknight.png" },
+    { name: "TheKing", cost: 1000000000, dps: 1000000, image: "./res/img/theking.png" },
   ];
 
   
