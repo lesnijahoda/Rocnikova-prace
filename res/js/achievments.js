@@ -35,13 +35,13 @@ export const achievements = [
     { id: "damage_10000", text: "Dosáhni damage 10 000!", condition: () => hero.damage > 10000, reward: 200 },
     { id: "damage_20000", text: "Dosáhni damage 20 000!", condition: () => hero.damage > 20000, reward: 200 },
 
-    { id: "damage_15", text: "Dosáhni dps 15!", condition: () => hero.dps >= 15, reward: 200 },
-    { id: "damage_50", text: "Dosáhni dps 50!", condition: () => hero.dps > 50, reward: 200 },
-    { id: "damage_100", text: "Dosáhni dps 100!", condition: () => hero.dps > 100, reward: 200 },
-    { id: "damage_1000", text: "Dosáhni dps 1 000!", condition: () => hero.dps > 1000, reward: 200 },
-    { id: "damage_10000", text: "Dosáhni dps 10 000!", condition: () => hero.dps > 10000, reward: 200 },
-    { id: "damage_50000", text: "Dosáhni dps 50 000!", condition: () => hero.dps > 50000, reward: 200 },
-    { id: "damage_100000", text: "Dosáhni dps 100 000!", condition: () => hero.dps > 100000, reward: 200 },
+    { id: "dps_15", text: "Dosáhni dps 15!", condition: () => hero.dps >= 15, reward: 200 },
+    { id: "dps_50", text: "Dosáhni dps 50!", condition: () => hero.dps > 50, reward: 200 },
+    { id: "dps_100", text: "Dosáhni dps 100!", condition: () => hero.dps > 100, reward: 200 },
+    { id: "ddps_1000", text: "Dosáhni dps 1 000!", condition: () => hero.dps > 1000, reward: 200 },
+    { id: "dps_10000", text: "Dosáhni dps 10 000!", condition: () => hero.dps > 10000, reward: 200 },
+    { id: "dps_50000", text: "Dosáhni dps 50 000!", condition: () => hero.dps > 50000, reward: 200 },
+    { id: "dps_100000", text: "Dosáhni dps 100 000!", condition: () => hero.dps > 100000, reward: 200 },
 
     { id: "clicks_50", text: "Kliknul si 50 krát!", condition: () => hero.clicks >=50 , reward: 200 },
     { id: "clicks_200", text: "Kliknul si 200 krát!", condition: () => hero.clicks > 200, reward: 200 },
@@ -83,6 +83,28 @@ export function displayAchievement(text) {
         listItem.innerText = text;
         achievementList.appendChild(listItem);
     }
+}
+
+export function updateAchievementProgress() {
+    const totalAchievements = achievements.length; // Celkový počet achievementů
+    let completedAchievements = 0; // Počet splněných achievementů
+
+    achievements.forEach(ach => {
+        if (ach.condition()) {
+            completedAchievements++;
+        }
+    });
+
+    // Pokud nemáme prvek na zobrazení pokroku, vytvoříme ho
+    let progressElement = document.getElementById("achievementProgress");
+    if (!progressElement) {
+        progressElement = document.createElement("div");
+        progressElement.id = "achievementProgress";
+        document.body.appendChild(progressElement);
+    }
+
+    // Zobrazení počtu splněných achievementů
+    progressElement.innerText = `${completedAchievements}/${totalAchievements}`;
 }
   
   

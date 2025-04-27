@@ -16,8 +16,17 @@ export function renderBackgroundPanel(hero) {
   // Naplnění tlačítek s backgrounds 
   backgroundOptions.innerHTML = `
     <button data-image="./res/img/backgrounds/louka.avif" data-cost="0">Pozadí Louka (0 zlata)</button>
-    <button data-image="./res/img/backgrounds/mesicek.avif" data-cost="50">Pozadí Měsíček (50 zlata)</button>
+    <button data-image="./res/img/backgrounds/city.png" data-cost="100">Pozadí Vesmír (10000 zlata)</button>
+    <button data-image="./res/img/backgrounds/night.jpg" data-cost="50">Pozadí Měsíček (50 zlata)</button>
     <button data-image="./res/img/backgrounds/vesmir.png" data-cost="100">Pozadí Vesmír (100 zlata)</button>
+    <button data-image="./res/img/backgrounds/les.jpg" data-cost="100">Pozadí Vesmír (10000 zlata)</button>
+    <button data-image="./res/img/backgrounds/theFurther.jpg" data-cost="100">Pozadí Vesmír (10000 zlata)</button>
+    <button data-image="./res/img/backgrounds/village.jpg" data-cost="100">Pozadí Vesmír (10000 zlata)</button>
+    <button data-image="./res/img/backgrounds/creation.jpg" data-cost="100">Pozadí Vesmír (10000 zlata)</button>
+   
+    <button data-image="./res/img/backgrounds/skyCity.png" data-cost="100">Pozadí Vesmír (10000 zlata)</button>
+    
+    
   `;
 
   // Přiřazení funkčnosti ke každému tlačítku
@@ -41,6 +50,7 @@ export function buyBackground(hero, imagePath, cost) {
     console.log('Nedostatek zlata!');
   }
 }
+
 
 
 

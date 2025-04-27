@@ -271,17 +271,115 @@ div {
   display: none;
 }
 
-#backgroundPanel button {
+#backgroundOptions button {
   background-color: rgb(162, 224, 111);
   border: none;
   padding: 8px;
   border-radius: 5px;
   cursor: pointer;
   margin-bottom: 5px;
-  display: block; /* aby se tlačítka řadila pod sebe */
-  width: 100%; /* Aby vyplnila šířku */
+  display: block;
+  width: 100%;
 }
 
 #backgroundPanel button:hover {
   background-color: #1e6cd1;
+}
+
+.multiplier-button.active {
+  background-color: #ffc107;
+  color: black;
+  font-weight: bold;
+}
+
+#multiplier-buttons {
+  display: flex;
+  justify-content: flex-start; 
+  gap: 10px;
+  margin: 130px auto;
+  padding: 10px;
+  
+}
+
+@media (max-width: 1200px) {
+  #multiplier-buttons {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  #multiplier-buttons {
+    flex-direction:row; 
+  
+  }
+}
+
+.multiplier-button {
+  top:0;
+  background-color: #111;
+  border: 2px solid gold;
+  color: white;
+  font-weight: bold;
+  border-radius: 8px;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: 0.2s ease;
+  width: 100px;
+}
+
+.multiplier-button:hover {
+  background-color: gold;
+  color: black;
+}
+
+.tab {
+  display: none;
+}
+.tab.active {
+  display: block;
+}
+.tab-button {
+  padding: 6px 12px;
+  background-color: #222;
+  color: white;
+  border: 1px solid gold;
+  cursor: pointer;
+  border-radius: 6px;
+  margin-right: 5px;
+}
+.tab-button.active {
+  background-color: gold;
+  color: black;
+  font-weight: bold;
+}
+
+
+.savebuttons{
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+.savebutton{
+  padding: 6px 12px;
+  background-color: #222;
+  color: white;
+  border: 1px solid gold;
+  cursor: pointer;
+  border-radius: 6px;
+  margin-right: 5px;
+}
+.savebutton:hover{
+  background-color: gold;
+  color: black;
+}
+
+.zalozky{
+  
+
+}
+#achievementProgress{
+  position: absolute;
+  top: 10;
+  right: 10;
 }

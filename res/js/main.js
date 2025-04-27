@@ -4,10 +4,82 @@ import { heroPanel, upgrades } from "./heroes.js";
 import {checkAchievements,} from "./achievments.js";
 import { abilities } from "./abilities.js";
 import { renderBackgroundPanel } from "./backgrounds.js";
+import { Enemy } from "./enemies.js";
+import { setupMultiplierButtons } from "./buy.js";
+import { purchaseMultiplier } from "./buy.js";
+import * as storage from "./storage.js";   
+import { updateAchievementProgress } from "./achievments.js";
 
+async function saveGame() {
+  const gameData = {
+    gold: hero.gold,
+    damage: hero.damage,
+    dps: hero.dps,
+    clicks: hero.clicks,
+    level: hero.level,
+    upgrades: upgrades.map(u => ({
+      name: u.name,
+      level: u.level,
+      cost: u.cost
+    })),
+    enemy: {
+      level: enemy.level,
+      name: enemy.name,
+      hp: enemy.hp,
+      maxHp: enemy.maxHp,
+      imageSrc: enemy.image.src  // ⬅️ Ukládáme string
+    }
+  };
+
+  try {
+    await storage.save("hra1", gameData);
+    console.log("✅ Hra uložena (vč. nepřítele)");
+  } catch (e) {
+    console.error("❌ Chyba při ukládání:", e);
+  }
+}
+
+// 📥 Načíst hru z IndexedDB
+async function loadGame() {
+  try {
+    const data = await storage.load("hra1");
+    if (!data) return console.log("⚠️ Žádná uložená hra");
+
+    hero.gold = data.gold;
+    hero.damage = data.damage;
+    hero.dps = data.dps;
+    hero.clicks = data.clicks;
+    hero.level = data.level;
+
+    enemy.level = data.enemy.level;
+    enemy.name = data.enemy.name;
+    enemy.hp = data.enemy.hp;
+    enemy.maxHp = data.enemy.maxHp;
+
+    enemy.image = new Image();  // ⬅️ Vytvoříme nový obrázek
+    enemy.image.src = data.enemy.imageSrc;
+
+    data.upgrades.forEach(saved => {
+      const up = upgrades.find(u => u.name === saved.name);
+      if (up) {
+        up.level = saved.level;
+        up.cost = saved.cost;
+      }
+    });
+
+    updateGoldBar();
+    updateGameInfo();
+    console.log("📥 Hra načtena (IndexedDB)");
+  } catch (e) {
+    console.error("❌ Chyba při načítání:", e);
+  }
+}
+
+window.saveGame = saveGame;
+window.loadGame = loadGame;
 // Hlavní soubor pro hru Clicker Heroes
 
-// 🧱 Základní objekty hrdiny a nepřítele
+//  Základní objekty hrdiny a nepřítele
 
 class Hero {
   constructor(name, damage) {
@@ -23,7 +95,7 @@ class Hero {
     enemy.hp -= this.damage;
     if (enemy.hp <= 0) {
       enemy.hp = 0;
-      this.gold += enemy.goldReward;
+      this.gold += enemy.goldReward * (hero.goldMultiplier || 1);
       enemy.respawn();
       updateGoldBar();
     }
@@ -35,7 +107,7 @@ class Hero {
       enemy.hp -= this.dps;
       if (enemy.hp <= 0) {
         enemy.hp = 0;
-        this.gold += enemy.goldReward;
+        hero.gold += enemy.goldReward * (hero.goldMultiplier || 1);
         enemy.respawn();
         updateGoldBar();
       }
@@ -43,24 +115,6 @@ class Hero {
   }
 }
 
-class Enemy {
-  constructor(name, hp, goldReward) {
-    this.name = name;
-    this.hp = hp;
-    this.maxHp = hp;
-    this.goldReward = goldReward;
-    this.level = 1;
-  }
-
-  // Znovuzrození nepřítele s vyšší úrovní
-  respawn() {
-    this.level++;
-    this.maxHp = Math.floor(this.maxHp * 1.5);
-    this.hp = this.maxHp;
-    this.goldReward = Math.floor(this.goldReward * 1.5);
-    
-  }
-}
 
 // 🎮 Vytvoření hrdiny a nepřítele
 export const hero = new Hero("Warrior", 10);
@@ -115,6 +169,7 @@ function gameLoop() {
   updateGameInfo();
   requestAnimationFrame(gameLoop);
   checkAchievements();
+  updateAchievementProgress();
 }
 
 // 🖌️ Kreslení na canvas
@@ -126,8 +181,8 @@ function draw() {
   const enemyPositionY = 0; // Vertikálně ve středu obrazovky
 
   // Pokud je obrázek nepřítele načtený, zobrazím ho
-  if (slimeImage.complete) {
-    ctx.drawImage(slimeImage, enemyPositionX, enemyPositionY, 200, 200); // Umístíme nepřítele na pravou polovinu obrazovky
+  if (enemy.image.complete) {
+    ctx.drawImage(enemy.image, enemyPositionX, enemyPositionY, 200, 200); // Umístíme nepřítele na pravou polovinu obrazovky
   } else {
     ctx.fillStyle = "red";
     ctx.fillRect(enemyPositionX, enemyPositionY, 200, 200); // Placeholder, pokud obrázek není načten
@@ -197,18 +252,42 @@ upgrades.forEach((upgrade) => {
   heroButton.innerHTML = `<span>Najmout</span><br><span>- ${upgrade.cost} zlata</span>`;
 
   heroButton.addEventListener("click", () => {
-    if (hero.gold >= upgrade.cost) {
-      hero.gold -= upgrade.cost;
-      upgrade.level++;
-      upgrade.isClickMultiplier
-        ? (hero.damage += 35)
-        : (hero.dps += upgrade.dps);
-      upgrade.cost = Math.floor(upgrade.cost * 1.5);
+    const totalCost = calculateTotalCost(upgrade.cost, purchaseMultiplier);
+  
+    if (hero.gold >= totalCost) {
+      hero.gold -= totalCost;
+  
+      // Zvětšení úrovně hrdiny podle násobku
+      upgrade.level += purchaseMultiplier;
+  
+      // Přidání damage nebo DPS podle typu
+      if (upgrade.isClickMultiplier) {
+        hero.damage += 35 * purchaseMultiplier;
+      } else {
+        hero.dps += upgrade.dps * purchaseMultiplier;
+      }
+  
+      // Zvýšení ceny po každém nákupu
+      for (let i = 0; i < purchaseMultiplier; i++) {
+        upgrade.cost = Math.floor(upgrade.cost * 1.5);
+      }
+  
       document.getElementById(`level-${upgrade.name}`).textContent = upgrade.level;
       heroButton.innerHTML = `<span>Najmout</span><br><span>- ${upgrade.cost} zlata</span>`;
       updateGameInfo();
     }
   });
+  setupMultiplierButtons();
+  
+  function calculateTotalCost(baseCost, multiplier) {
+    let cost = 0;
+    let currentCost = baseCost;
+    for (let i = 0; i < multiplier; i++) {
+      cost += currentCost;
+      currentCost = Math.floor(currentCost * 1.5);
+    }
+    return cost;
+  }
 
   heroRow.appendChild(heroImage);
   heroRow.appendChild(heroInfo);

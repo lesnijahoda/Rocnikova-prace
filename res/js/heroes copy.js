@@ -28,6 +28,6 @@ function reduceDPS(upgrades, factor) {
   });
 }
 
-reduceDPS(upgrades, 0.85); // Snížení DPS o 70 %
+reduceDPS(upgrades, 0.85); // Snížení DPS o 85 %
   
   
