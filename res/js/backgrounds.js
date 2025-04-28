@@ -12,7 +12,6 @@ export function renderBackgroundPanel(hero) {
   toggleButton.addEventListener('click', () => {
     backgroundOptions.style.display = backgroundOptions.style.display === 'none' ? 'block' : 'none';
   });
-
   //pole s backgrounds
   const backgrounds = [
     { name: "Pozadí Louka", image: "./res/img/backgrounds/louka.avif", cost: 0 },
@@ -25,6 +24,7 @@ export function renderBackgroundPanel(hero) {
     { name: "Pozadí Creation", image: "./res/img/backgrounds/creation.jpg", cost: 105000 },
     { name: "Pozadí Sky City", image: "./res/img/backgrounds/skyCity.png", cost: 110000 }
   ];
+
 
   
   backgroundOptions.innerHTML = backgrounds.map(background => 
