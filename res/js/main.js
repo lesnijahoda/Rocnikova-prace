@@ -269,7 +269,7 @@ upgrades.forEach((upgrade) => {
   
       // Zvýšení ceny po každém nákupu
       for (let i = 0; i < purchaseMultiplier; i++) {
-        upgrade.cost = Math.floor(upgrade.cost * 1.5);
+        upgrade.cost = Math.floor(upgrade.cost * 1.15);
       }
   
       document.getElementById(`level-${upgrade.name}`).textContent = upgrade.level;

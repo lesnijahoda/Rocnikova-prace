@@ -2,42 +2,50 @@ export function renderBackgroundPanel(hero) {
   const backgroundOptions = document.getElementById('backgroundOptions');
   const toggleButton = document.getElementById('toggleBackgroundPanel');
 
-   
   if (!backgroundOptions || !toggleButton) {
     console.error('backgroundOptions nebo toggleButton nebyl nalezen!');
     return;
   }
 
-  // otevření a zavření panelu
   toggleButton.addEventListener('click', () => {
     backgroundOptions.style.display = backgroundOptions.style.display === 'none' ? 'block' : 'none';
   });
-  //pole s backgrounds
+
+  // Data přímo v poli
   const backgrounds = [
-    { name: "Pozadí Louka", image: "./res/img/backgrounds/louka.avif", cost: 0 },
-    { name: "Pozadí Vesmír", image: "./res/img/backgrounds/city.png", cost: 50 },
-    { name: "Pozadí Měsíček", image: "./res/img/backgrounds/night.jpg", cost: 300 },
-    { name: "Pozadí Vesmír", image: "./res/img/backgrounds/vesmir.png", cost: 1000 },
-    { name: "Pozadí Les", image: "./res/img/backgrounds/les.jpg", cost: 10000 },
-    { name: "Pozadí The Further", image: "./res/img/backgrounds/theFurther.jpg", cost: 10500 },
-    { name: "Pozadí Village", image: "./res/img/backgrounds/village.jpg", cost: 100000 },
-    { name: "Pozadí Creation", image: "./res/img/backgrounds/creation.jpg", cost: 105000 },
-    { name: "Pozadí Sky City", image: "./res/img/backgrounds/skyCity.png", cost: 110000 }
+    { name: "Louka", image: "res/img/backgrounds/louka.avif", cost: 0 },
+    { name: "Město", image: "res/img/backgrounds/city.png", cost: 50 },
+    { name: "Noc", image: "res/img/backgrounds/night.jpg", cost: 300 },
+    { name: "Vesmír", image: "res/img/backgrounds/vesmir.png", cost: 4000 },
+    { name: "Les", image: "res/img/backgrounds/les.jpg", cost: 8000 },
+    { name: "Jiný svět", image: "res/img/backgrounds/theFurther.jpg", cost: 15000 },
+    { name: "Vesnice", image: "res/img/backgrounds/village.jpg", cost: 30000 },
+    { name: "Stvoření", image: "res/img/backgrounds/creation.jpg", cost: 50000 },
+    { name: "Nebeské město", image: "res/img/backgrounds/skyCity.png", cost: 100000 }
   ];
 
+  backgroundOptions.innerHTML = '';
 
-  
-  backgroundOptions.innerHTML = backgrounds.map(background => 
-    `<button data-cost="${background.cost}">${background.name} (${background.cost} zlata)</button>`
-  ).join('');
-
-  
-  backgroundOptions.querySelectorAll('button').forEach((button, index) => {
+  backgrounds.forEach(bg => {
+    const button = document.createElement('button');
+    button.textContent = `${bg.name} (${bg.cost} zlata)`;
     button.addEventListener('click', () => {
-      const background = backgrounds[index];
-      buyBackground(hero, background.image, background.cost);
+      buyBackground(hero, bg.image, bg.cost);
     });
+    backgroundOptions.appendChild(button);
   });
+
+  function buyBackground(hero, imagePath, cost) {
+    if (hero.gold >= cost) {
+      hero.gold -= cost;
+      document.body.style.backgroundImage = `url('${imagePath}')`;
+      document.body.style.backgroundSize = 'cover';
+      document.body.style.backgroundPosition = 'center';
+      console.log('✅ Pozadí změněno!');
+    } else {
+      console.log('❌ Nedostatek zlata!');
+    }
+  }
 }
 
 
